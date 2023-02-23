@@ -15,9 +15,14 @@ public:
 
 	static void InitializeNativeTags();
 
+	// State Tag
 	FGameplayTag State_Dead;
 	FGameplayTag State_Debuff_Stun;
 	FGameplayTag State_RemoveOnDeath;
+
+	// Ability Tag
+	FGameplayTag Ability;
+	FGameplayTag Ability_NotCanceledByStun;
 
 protected:
 	//Registers all of the tags with the GameplayTags Manager

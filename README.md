@@ -5,8 +5,16 @@ Unreal Engine 5.1 Gameplay Ability System (GAS) Tutorial
 - Youtube 영상
   - [[UE5] General Gameplay Ability System Tutorial](https://www.youtube.com/watch?v=LxT8Fc2ejgI&list=PLuS6-Pdt2hhYGZkME7K7ZDT2qf4vbY5c3)
     - (1) 프로젝트 설정
-	- (2) Attributes 정의
-	- (3) AbilitySystemComponent 설정
+	- (2) AttributeSets 정의
+	- (3) BaseCharacter Class 정의
+	- (4) PlayerState 정의
+	- (5) PlayerController
+	- (6) Effects & Cues
+	- (7) Target Actors & Abilities
+	- (8) Modular Gameplay Features (Abilities)
+	- (9) Events
+	- (10) (Damage) Effect Calculations
+
 - GASDocumentation
   - 3\. [Setting Up a Project Using GAS](https://github.com/tranek/GASDocumentation#setup)
   - 4.4.3 [Defining Attributes](https://github.com/tranek/GASDocumentation#concepts-as-attributes)
@@ -99,7 +107,7 @@ AssetManagerClassName=/Script/UnrealGAS.GASAssetManager
 </div>
 </details>
 
-## Attributes 정의
+## AttributeSets 정의
 - `Attributes`는 `AttributeSet` 헤더 파일에서 C++로만 정의할 수 있다
 - `UAttributeSet`를 상속받은 `CharacterAttributeSetBase` 생성
 
@@ -212,8 +220,15 @@ void UCharacterAttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 </div>
 </details>
 
-## AbilitySystemComponent 설정
+## BaseCharacter Class 정의
 - `UAbilitySystemComponent`를 상속받은 `CharacterAbilitySystemComponent.h` 생성
 - `UGameplayAbility`를 상속받은 `CharacterGameplayAbility` 생성
 - `ACharacter`와 `IAbilitySystemInterface`를 상속받은 `GASCharacterBase` 생성
-  - 멤버 변수로 `CharacterAbilitySystemComponent`, `CharacterAttributeSetBase`, `CharacterGameplayAbility` 설정
+  - 멤버 변수
+    - `CharacterAbilitySystemComponent`
+	- `CharacterAttributeSetBase`
+	- `CharacterGameplayAbility`
+
+## PlayerState 정의
+- `AIController`를 상속받은 `PlayerAIController` 생성
+- `PlayerState`를 상속받은 `GASPlayerState` 생성

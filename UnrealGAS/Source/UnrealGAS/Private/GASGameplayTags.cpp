@@ -21,9 +21,14 @@ void FGASGameplayTags::InitializeNativeTags()
 
 void FGASGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 {
+	// State Tag
 	ADD_TAG(State_Dead, "Dead State");
 	ADD_TAG(State_Debuff_Stun, "Stun Debuff State");
 	ADD_TAG(State_RemoveOnDeath, "RemoveOnDeath State");
+
+	// Ability Tag
+	ADD_TAG(Ability, "Ability");
+	ADD_TAG(Ability_NotCanceledByStun, "Not Canceled By Stun Ability");
 }
 
 // Todo OutTag의 변수명을 분석하여 TagName을 자동으로 추가하는 기능 필요
