@@ -7,6 +7,7 @@
 #include "Character/Abilities/AttributeSets/CharacterAttributeSetBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Character/Abilities/CharacterGameplayAbility.h"
+#include "GASGameplayTags.h"
 
 // Sets default values
 AGASCharacterBase::AGASCharacterBase(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -17,10 +18,9 @@ AGASCharacterBase::AGASCharacterBase(const class FObjectInitializer& ObjectIniti
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECR_Overlap);
 
 	bAlwaysRelevant = true;
-
-	// Todo Native Tag로 교체?
-	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
-	EffectRemoveOnDeathTag = FGameplayTag::RequestGameplayTag(FName("State.RemoveOnDead"));
+	
+	DeadTag = FGASGameplayTags::Get().State_Dead;
+	EffectRemoveOnDeathTag = FGASGameplayTags::Get().State_RemoveOnDeath;
 }
 
 // Called to bind functionality to input

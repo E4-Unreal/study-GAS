@@ -2,14 +2,14 @@
 
 #include "Character/Abilities/CharacterGameplayAbility.h"
 #include "Character/Abilities/CharacterAbilitySystemComponent.h"
+#include "GASGameplayTags.h"
 
 UCharacterGameplayAbility::UCharacterGameplayAbility()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
-
-	// Todo Native Tag로 교체?
-	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(("State.Dead")));
-	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(("State.Debuff.Stun")));
+	
+	ActivationBlockedTags.AddTag(FGASGameplayTags::Get().State_Dead);
+	ActivationBlockedTags.AddTag(FGASGameplayTags::Get().State_Debuff_Stun);
 }
 
 void UCharacterGameplayAbility::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo,
