@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class UNREALGAS_API UGASEnhancedInputComponent : public UEnhancedInputComponent
+class UNREALGAS_API UGASInputComponent : public UEnhancedInputComponent
 {
 	GENERATED_BODY()
 
@@ -22,7 +22,7 @@ public:
 };
 
 template<class UserClass, typename FuncType>
-void UGASEnhancedInputComponent::BindActionByTag(const UInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func)
+void UGASInputComponent::BindActionByTag(const UInputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func)
 {
 	check(InputConfig);
 	if (const UInputAction* IA = InputConfig->FindInputActionForTag(InputTag))

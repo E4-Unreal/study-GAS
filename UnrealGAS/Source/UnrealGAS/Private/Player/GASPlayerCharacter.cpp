@@ -6,18 +6,22 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "AI/PlayerAIController.h"
 
 // For Input
 #include "Components/InputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Input/GASEnhancedInputComponent.h"
 #include "GASGameplayTags.h"
+#include "Character/Abilities/CharacterAbilitySystemComponent.h"
+#include "Character/Abilities/AttributeSets/CharacterAttributeSetBase.h"
+#include "Player/GASPlayerState.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 // AGASPlayerCharacter
 
-AGASPlayerCharacter::AGASPlayerCharacter()
+AGASPlayerCharacter::AGASPlayerCharacter(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -52,6 +56,8 @@ AGASPlayerCharacter::AGASPlayerCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+	AIControllerClass = APlayerAIController::StaticClass();
 }
 
 void AGASPlayerCharacter::BeginPlay()
@@ -67,6 +73,9 @@ void AGASPlayerCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	StartingCameraBoomArmLength = CameraBoom->TargetArmLength;
+	StartingCameraBoomLocation = CameraBoom->GetRelativeLocation();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,7 +83,7 @@ void AGASPlayerCharacter::BeginPlay()
 
 void AGASPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	UGASEnhancedInputComponent* GASEnhancedInputComponent = CastChecked<UGASEnhancedInputComponent>(PlayerInputComponent);
+	UGASInputComponent* GASEnhancedInputComponent = CastChecked<UGASInputComponent>(PlayerInputComponent);
 
 	//Make sure to set your input component class in the InputSettings->DefaultClasses
 	check(GASEnhancedInputComponent);
@@ -86,10 +95,15 @@ void AGASPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	GASEnhancedInputComponent->BindActionByTag(InputConfig, GameplayTags.InputTag_Look, ETriggerEvent::Triggered, this, &AGASPlayerCharacter::Input_Look);
 	GASEnhancedInputComponent->BindActionByTag(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Triggered, this, &AGASPlayerCharacter::Input_Jump);
 
+	//Bind Input actions by ASC
+	BindAscInput();
 }
 
 void AGASPlayerCharacter::Input_Move(const FInputActionValue& Value)
 {
+	// With GAS
+	if(!IsAlive()){ return; }
+	
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -113,6 +127,9 @@ void AGASPlayerCharacter::Input_Move(const FInputActionValue& Value)
 
 void AGASPlayerCharacter::Input_Look(const FInputActionValue& Value)
 {
+	// With GAS
+	if(!IsAlive()){ return; }
+		
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
@@ -126,7 +143,73 @@ void AGASPlayerCharacter::Input_Look(const FInputActionValue& Value)
 
 void AGASPlayerCharacter::Input_Jump(const FInputActionValue& InputActionValue)
 {
+	// With GAS
+	if(!IsAlive()){ return; }
+	
 	Jump();
+}
+
+void AGASPlayerCharacter::InitializeGas(AGASPlayerState* PS)
+{
+	// Inherited From AGASCharacterBase
+	AttributeSetBase = PS->GetAttributeSetBase();
+	AbilitySystemComponent = Cast<UCharacterAbilitySystemComponent>(PS->GetAbilitySystemComponent());
+		
+	// PlayerController에서 이미 설정하였지만, AI PlayerController에서 설정을 안 해줄 수 있으므로 캐릭터 자체에서도 설정을 하도록 함
+	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+		
+	AbilitySystemComponent->SetTagMapCount(DeadTag, 0);
+
+	// GE_PlayerAttributes
+	InitializeAttributes();
+	
+	// Default Settings for GAS
+	SetHealth(GetMaxHealth());
+	SetMana(GetMaxMana());
+}
+
+void AGASPlayerCharacter::BindAscInput()
+{
+	if(!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
+	{
+		FTopLevelAssetPath AbilityEnumAssetPath = FTopLevelAssetPath(FName("/Script/UnrealGAS"), FName("EGASAbilityID"));
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(
+			InputComponent,
+			FGameplayAbilityInputBinds(
+				FString("ConfirmTarget"),
+				FString("CancelTarget"),
+				AbilityEnumAssetPath,
+				static_cast<int32>(EGASAbilityID::Confirm),
+				static_cast<int32>(EGASAbilityID::Cancel)));
+		ASCInputBound = true;
+	}
+}
+
+void AGASPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	AGASPlayerState* PS = GetPlayerState<AGASPlayerState>();
+
+	if(PS)
+	{
+		InitializeGas(PS);
+		AddStartupEffects();
+		AddCharacterAbilities();
+	}
+}
+
+void AGASPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	
+	AGASPlayerState* PS = GetPlayerState<AGASPlayerState>();
+
+	if(PS)
+	{
+		InitializeGas(PS);
+		BindAscInput();
+	}
 }
 
 
