@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
-#include "UnrealGas/UnrealGas.h"
+#include "UnrealGASModule.h"
 #include "GameplayTagContainer.h"
 #include "GASCharacterBase.generated.h"
 

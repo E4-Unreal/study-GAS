@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "UnrealGAS/UnrealGAS.h"
+#include "UnrealGASModule.h"
 #include "CharacterGameplayAbility.generated.h"
 
 /**

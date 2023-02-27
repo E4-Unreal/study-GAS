@@ -29,6 +29,11 @@ void FGASGameplayTags::AddAllTags(UGameplayTagsManager& Manager)
 	// Ability Tag
 	ADD_TAG(Ability, "Ability");
 	ADD_TAG(Ability_NotCanceledByStun, "Not Canceled By Stun Ability");
+
+	// Input Tags
+	ADD_TAG(InputTag_Move, "Move input.");
+	ADD_TAG(InputTag_Look, "Look input.");
+	ADD_TAG(InputTag_Jump, "Jump input");
 }
 
 // Todo OutTag의 변수명을 분석하여 TagName을 자동으로 추가하는 기능 필요

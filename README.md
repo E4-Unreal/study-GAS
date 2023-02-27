@@ -1,6 +1,8 @@
 # UnrealGAS
 Unreal Engine 5.1 Gameplay Ability System (GAS) Tutorial
 
+`[UE5] General Gameplay Ability System Tutorial`를 따라하되, 입력 시스템은 `Enhanced Input Binding with Gameplay Tags C++`로 변경하여 사용
+
 ## 참고 링크
 - Youtube 영상
   - [[UE5] General Gameplay Ability System Tutorial](https://www.youtube.com/watch?v=LxT8Fc2ejgI&list=PLuS6-Pdt2hhYGZkME7K7ZDT2qf4vbY5c3)
@@ -19,6 +21,8 @@ Unreal Engine 5.1 Gameplay Ability System (GAS) Tutorial
   - 3\. [Setting Up a Project Using GAS](https://github.com/tranek/GASDocumentation#setup)
   - 4.4.3 [Defining Attributes](https://github.com/tranek/GASDocumentation#concepts-as-attributes)
   - 4.3.3 [Meta Attributes](https://github.com/tranek/GASDocumentation#concepts-a-meta)
+
+- [Enhanced Input Binding with Gameplay Tags C++](https://dev.epicgames.com/community/learning/tutorials/aqrD/unreal-engine-enhanced-input-binding-with-gameplay-tags-c)
 
 ## 프로젝트 설정
 1. 에디터에서 GameplayAbilitySystem 플러그인 활성화 (편집 > 플러그인 > Gameplay > Gameplay Abilities)
