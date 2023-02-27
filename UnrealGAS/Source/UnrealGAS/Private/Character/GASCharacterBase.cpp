@@ -163,7 +163,7 @@ void AGASCharacterBase::BeginPlay()
 
 void AGASCharacterBase::AddCharacterAbilities()
 {
-	if(GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || !AbilitySystemComponent->CharacterAbilitiesGiven){ return; }
+	if(GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven){ return; }
 
 	for(TSubclassOf<UCharacterGameplayAbility>& StartupAbility : CharacterAbilities)
 	{
