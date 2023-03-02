@@ -49,7 +49,10 @@ protected:
 
 	/** The input config that maps Input Actions to Input Tags*/
 	UPROPERTY(EditDefaultsOnly, Category = "GAS|Input")
-	class UInputConfig* InputConfig;
+	class UGASInputConfig* InputConfig;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "GAS|Input")
+	class UAbilityInputConfig* AbilityInputConfig;
 
 	/** Handles moving forward/backward */
 	void Input_Move(const FInputActionValue& InputActionValue);
@@ -60,11 +63,17 @@ protected:
 	/** Handles Jumping */
 	void Input_Jump(const FInputActionValue& InputActionValue);
 
+	// Ability Input
+	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
+	
+	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+
 	// For GAS
 	bool ASCInputBound = false;
 	
 	void InitializeGas(class AGASPlayerState* PS);
-	
+
+	// Bind to InputComponent
 	void BindASCInput();
 
 	virtual void PossessedBy(AController* NewController) override;

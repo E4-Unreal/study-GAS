@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "GameplayTagContainer.h"
 #include "E4GASModule.h"
 #include "CharacterGameplayAbility.generated.h"
 
@@ -19,11 +20,8 @@ public:
 	UCharacterGameplayAbility();
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
-	EGASAbilityID AbilityInputID = EGASAbilityID::None;
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
 	EGASAbilityID AbilityID = EGASAbilityID::None;
-
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ability")
 	bool ActivateAbilityOnGranted = false;
 

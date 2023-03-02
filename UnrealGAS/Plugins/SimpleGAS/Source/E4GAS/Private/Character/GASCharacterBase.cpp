@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Character/Abilities/CharacterGameplayAbility.h"
 #include "GASGameplayTags.h"
+#include "Input/GASInputComponent.h"
 
 // Sets default values
 AGASCharacterBase::AGASCharacterBase(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -18,9 +19,13 @@ AGASCharacterBase::AGASCharacterBase(const class FObjectInitializer& ObjectIniti
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECR_Overlap);
 
 	bAlwaysRelevant = true;
-	
+
+	// Set Tags
 	DeadTag = FGASGameplayTags::Get().State_Dead;
 	EffectRemoveOnDeathTag = FGASGameplayTags::Get().State_RemoveOnDeath;
+
+	// Override InputComponent Class for GASInputComponent
+	OverrideInputComponentClass = UGASInputComponent::StaticClass();
 }
 
 // Called to bind functionality to input
@@ -170,7 +175,7 @@ void AGASCharacterBase::AddCharacterAbilities()
 		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(
 			StartupAbility,
 			GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID),
-			static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID),
+			static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityID),
 			this
 			));
 	}

@@ -11,7 +11,7 @@
 // For Input
 #include "Components/InputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Input/GASEnhancedInputComponent.h"
+#include "Input/GASInputComponent.h"
 #include "GASGameplayTags.h"
 #include "Character/Abilities/CharacterAbilitySystemComponent.h"
 #include "Character/Abilities/AttributeSets/CharacterAttributeSetBase.h"
@@ -83,22 +83,24 @@ void AGASPlayerCharacter::BeginPlay()
 
 void AGASPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	UGASInputComponent* GASEnhancedInputComponent = CastChecked<UGASInputComponent>(PlayerInputComponent);
+	UGASInputComponent* GASInputComponent = CastChecked<UGASInputComponent>(PlayerInputComponent);
 
 	//Make sure to set your input component class in the InputSettings->DefaultClasses
-	check(GASEnhancedInputComponent);
+	check(GASInputComponent);
 
 	const FGASGameplayTags& GameplayTags = FGASGameplayTags::Get();
 	
-	//Bind Input actions by tag
-	GASEnhancedInputComponent->BindActionByTag(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-	GASEnhancedInputComponent->BindActionByTag(InputConfig, GameplayTags.InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
-	GASEnhancedInputComponent->BindActionByTag(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Triggered, this, &ThisClass::Input_Jump);
+	// Bind Native actions by input tag
+	GASInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	GASInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	GASInputComponent->BindNativeAction(InputConfig, GameplayTags.InputTag_Jump, ETriggerEvent::Triggered, this, &ThisClass::Input_Jump);
+
+	// Bind Ability actions by input tag
+	TArray<uint32> BindHandles;
+	GASInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, /*out*/ BindHandles);
 
 	//Bind Input actions by ASC
 	BindASCInput();
-
-	// Todo 테스트 중. 함수로 만들 예정
 }
 
 void AGASPlayerCharacter::Input_Move(const FInputActionValue& Value)
@@ -149,6 +151,18 @@ void AGASPlayerCharacter::Input_Jump(const FInputActionValue& InputActionValue)
 	if(!IsAlive()){ return; }
 	
 	Jump();
+}
+
+void AGASPlayerCharacter::Input_AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	EGASAbilityID AbilityID = AbilityInputConfig->FindAbilityIDForTag(InputTag);
+	AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(AbilityID));
+}
+
+void AGASPlayerCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	EGASAbilityID AbilityID = AbilityInputConfig->FindAbilityIDForTag(InputTag);
+	AbilitySystemComponent->AbilityLocalInputReleased(static_cast<int32>(AbilityID));
 }
 
 void AGASPlayerCharacter::InitializeGas(AGASPlayerState* PS)

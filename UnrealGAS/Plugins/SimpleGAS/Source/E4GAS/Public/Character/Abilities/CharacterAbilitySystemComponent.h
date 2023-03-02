@@ -21,6 +21,9 @@ public:
 	bool StartupEffectsApplied = false;
 
 	FReceivedDamageDelegate ReceivedDamage;
+
+	// Bind with GameplayTag
+	void BindAbilityActivationToEnhancedInputComponent(UInputComponent* InputComponent, FGameplayAbilityInputBinds BindInfo);
 	
 	virtual void ReceiveDamage(UCharacterAbilitySystemComponent* SourceASC, float UnmitigatedDamage, float MitigatedDamage);
 };
