@@ -1,0 +1,36 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "0.1",
+    "FriendlyName": "SimpleMGF",
+    "Description": "",
+    "Category": "Modular Game Features",
+    "CreatedBy": "Eu4ng",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "EngineVersion": "5.1.0",
+    "EnabledByDefault": true,
+    "CanContainContent": true,
+    "IsBetaVersion": false,
+    "IsExperimentalVersion": true,
+    "Installed": false,
+    "Modules": [
+        {
+            "Name": "SimpleMGFGame",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "SimpleMGFEditor",
+            "Type": "Editor",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "SimpleMGFGameplayTags",
+            "Type": "Runtime",
+            "LoadingPhase": "PostSplashScreen"
+        }
+    ]
+}

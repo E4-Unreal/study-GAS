@@ -1,9 +1,9 @@
 {
   "FileVersion": 3,
   "Version": 1,
-  "VersionName": "1.0",
+  "VersionName": "0.1",
   "FriendlyName": "SimpleGAS",
-  "Description": "",
+  "Description": "Simple Gameplay Ability System",
   "Category": "Gameplay Ability System",
   "CreatedBy": "Eu4ng",
   "CreatedByURL": "",
