@@ -29,6 +29,7 @@ public class SimpleMGFGame : ModuleRules
 				"Core",
 				
 				// Additional Modules
+				"EnhancedInput"
 			}
 			);
 			
@@ -41,6 +42,15 @@ public class SimpleMGFGame : ModuleRules
 				"Engine",
 
 				// Additional Modules
+				//// Native Gameplay Tags
+				"SimpleMGFGameplayTags",
+				"GameplayTags",
+				//// Gameplay Ability System
+				"GameplayAbilities",
+				"GameplayTasks",
+				//// Modular Gameplay Features
+				"ModularGameplay",
+				"GameFeatures",
 			}
 			);
 		
