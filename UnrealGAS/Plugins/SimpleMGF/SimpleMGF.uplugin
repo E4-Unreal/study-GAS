@@ -32,5 +32,27 @@
             "Type": "Runtime",
             "LoadingPhase": "PostSplashScreen"
         }
+    ],
+    "Plugins": [
+        {
+            "Name": "EnhancedInput",
+            "Enabled": true
+        },
+        {
+            "Name": "GameplayAbilities",
+            "Enabled": true
+        },
+        {
+            "Name": "GameFeatures",
+            "Enabled": true
+        },
+        {
+            "Name": "ModularGameplay",
+            "Enabled": true
+        },
+        {
+            "Name": "AbilitySystemGameFeatureActions",
+            "Enabled": true
+        }
     ]
 }
